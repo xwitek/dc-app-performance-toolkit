@@ -4,36 +4,36 @@ settings:
   aggregator: consolidator
   verbose: false
   env:
-    application_hostname: test_confluence_instance.atlassian.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
+    application_hostname: ec2-18-156-200-53.eu-central-1.compute.amazonaws.com   # Confluence DC hostname without protocol and port e.g. test-confluence.atlassian.com or localhost
     application_protocol: http      # http or https
-    application_port: 80            # 80, 443, 8080, 1990, etc
-    secure: True                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
+    application_port: 8090            # 80, 443, 8080, 1990, etc
+    secure: False                    # Set False to allow insecure connections, e.g. when using self-signed SSL certificate
     application_postfix:            # e.g. /confluence in case of url like http://localhost:1990/confluence
     admin_login: admin
     admin_password: admin
     load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 200                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 45m
-    ramp-up: 5m                     # time to spin all concurrent users
-    total_actions_per_hour: 20000
+    concurrency: 5                # number of concurrent virtual users for jmeter or locust scenario
+    test_duration: 2m
+    ramp-up: 1m                     # time to spin all concurrent users
+    total_actions_per_hour: 6000
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
-    LANGUAGE: en_US.utf8
+    LANGUAGE: cz_CZ.utf8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
-    view_page: 54
-    view_dashboard: 6
-    view_blog: 8
-    search_cql: 7
-    create_blog: 3
-    create_and_edit_page: 6
+    view_page: 5
+    view_dashboard: 5
+    view_blog: 5
+    search_cql: 5
+    create_blog: 5
+    create_and_edit_page: 5
     comment_page: 5
     view_attachment: 3
     upload_attachment: 5
-    like_page: 3
-    standalone_extension: 0 # By default disabled
+    like_page: 2
+    standalone_extension: 65 # By default disabled
     # Custom dataset section.
-    custom_dataset_query:           # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
+    custom_dataset_query: "title ~ '*Page*'"     # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
 services:
   - module: shellexec
     prepare:
