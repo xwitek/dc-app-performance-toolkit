@@ -12,13 +12,13 @@ settings:
     admin_login: admin
     admin_password: admin
     load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
-    concurrency: 5                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 2m
-    ramp-up: 1m                     # time to spin all concurrent users
-    total_actions_per_hour: 6000
+    concurrency: 10                # number of concurrent virtual users for jmeter or locust scenario
+    test_duration: 10m
+    ramp-up: 40s                     # time to spin all concurrent users
+    total_actions_per_hour: 2000
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
-    LANGUAGE: cz_CZ.utf8
+    LANGUAGE: en_US.utf-8
     allow_analytics: Yes            # Allow sending basic run analytics to Atlassian. These analytics help us to understand how the tool is being used and help us to continue to invest in this tooling. For more details please see our README.
     # Action percentage for JMeter and Locust load executors
     view_page: 5

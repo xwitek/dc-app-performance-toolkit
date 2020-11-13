@@ -7,17 +7,33 @@ from selenium_ui.base_page import BasePage
 
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-    if datasets['custom_pages']:
-        app_specific_page = datasets['custom_pages']
-        app_specific_page_id = app_specific_page[0]
-
     @print_timing("selenium_app_custom_action")
     def measure():
 
-        @print_timing("selenium_app_custom_action:view_page")
-        def sub_measure():
-            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={app_specific_page_id}")
-            page.wait_until_visible((By.ID, "title-text"))  # Wait for title field visible
-            page.wait_until_visible((By.ID, "ID_OF_YOUR_APP_SPECIFIC_UI_ELEMENT"))  # Wait for you app-specific UI element by ID selector
-        sub_measure()
+        @print_timing("selenium_app_custom_action:dbViewActionPage")
+        def sub_dbview_action():
+            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/plugins/dbview/dbView.action?actiontype=viewDB")
+            page.wait_until_visible((By.XPATH, "//h1[contains(.,\'Confluence Database View\')]"))
+            assert webdriver.title == "Confluence Database View - Confluence"
+            page.wait_until_visible((By.ID, "inlineDialogTablesShow"))
+
+        @print_timing("selenium_app_custom_action:dbViewActionTables")
+        def sub_dbview_tables():
+            webdriver.find_element(By.ID, "inlineDialogTablesShow").click()
+            page.wait_until_visible((By.LINK_TEXT, "\"AO_8F902A_READER_ELEMENT\""))
+            webdriver.find_element(By.LINK_TEXT, "\"AO_8F902A_READER_ELEMENT\"").click()
+            elements = webdriver.find_elements(By.CSS_SELECTOR, ".ace_text-input")
+            assert len(elements) > 0
+            elements = webdriver.find_elements(By.ID, "submitQuery")
+            assert len(elements) > 0
+
+        @print_timing("selenium_app_custom_action:dbViewActionTables")
+        def sub_dbview_sql_result():
+            webdriver.find_element(By.ID, "submitQuery").click()
+            page.wait_until_visible((By.ID, "resultTable"))
+            assert webdriver.find_element(By.XPATH, "//table[@id=\'resultTable\']/thead/tr/th").text == "AUTHOR_USER_NAME"
+
+        sub_dbview_action()
+        sub_dbview_tables()
+        sub_dbview_sql_result()
     measure()
