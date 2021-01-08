@@ -13,9 +13,9 @@ settings:
     admin_password: admin
     load_executor: jmeter           # jmeter and locust are supported. jmeter by default.
     concurrency: 5                # number of concurrent virtual users for jmeter or locust scenario
-    test_duration: 2m
+    test_duration: 10m
     ramp-up: 1m                     # time to spin all concurrent users
-    total_actions_per_hour: 6000
+    total_actions_per_hour: 2000
     WEBDRIVER_VISIBLE: False
     JMETER_VERSION: 5.2.1
     LANGUAGE: cz_CZ.utf8
@@ -33,7 +33,7 @@ settings:
     like_page: 2
     standalone_extension: 65 # By default disabled
     # Custom dataset section.
-    custom_dataset_query: "title ~'page' or title ~'blog' or title ~'Blogtest' or title ~'Test'"     # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
+    custom_dataset_query:  "space = 'TST'"     # Write CQL query to add CQL output to the app/datasets/confluence/custom_pages.csv, e.g. "title ~ 'AppPage*'"
 services:
   - module: shellexec
     prepare:
