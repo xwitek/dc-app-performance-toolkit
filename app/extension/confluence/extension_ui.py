@@ -138,10 +138,38 @@ def app_specific_action(webdriver, datasets):
             elements = webdriver.find_elements(By.ID, "reader-expander-trigger-top")
             assert len(elements) == 0
             """
-        
+
+        @print_timing("selenium_app_custom_action:userOverview")
+        def sub_userOverview():
+
+            if custDebug: print("===============CUSTOM ACTION READERS LOG============")
+
+            if custDebug: print(f"{CONFLUENCE_SETTINGS.server_url}/plugins/readers-page/userprofileoverview.action")
+            page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/plugins/readers-page/userprofileoverview.action")
+            if custDebug: print("Page User overview called")
+            page.wait_until_visible((By.ID, "user-overview-table"))
+            if custDebug: print("Page wait complete")
+
+            button_filter = webdriver.find_elements(By.ID, "filter-button")
+            assert len(button_filter) > 0
+            if custDebug: print("========= Assert 8 complete")
+
+            webdriver.find_element(By.ID, "filter-button").click()
+            if custDebug: print("Action 11 complete")
+
+            page.wait_until_visible((By.ID, "filter-status-radio3"))
+            webdriver.find_element(By.ID, "filter-status-radio3").click()
+            if custDebug: print("Action 12 complete")
+
+            page.wait_until_visible((By.ID, "user-overview-table"))
+            readers_tables = webdriver.find_elements(By.ID, "user-overview-table")
+            assert len(readers_tables) > 0
+            if custDebug: print("========= Assert 9 complete")
+
         if app_spec_page_id != "":
           sub_viewPageReaders()
           sub_addPageReaderUser()
           sub_confirmPageRead()
-    measure()
+          sub_userOverview()
 
+    measure()
