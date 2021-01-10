@@ -3,10 +3,8 @@ from selenium_ui.conftest import print_timing
 from util.conf import CONFLUENCE_SETTINGS
 from selenium_ui.base_page import BasePage
 
-
 def app_specific_action(webdriver, datasets):
     page = BasePage(webdriver)
-
 
     #print(datasets)
     app_specific_page = datasets['custom_pages']
@@ -58,12 +56,12 @@ def app_specific_action(webdriver, datasets):
             webdriver.find_element(By.CSS_SELECTOR, ".select2-choice").click()
             #webdriver.save_screenshot(f"./debug/{app_spec_page_id}-{app_spec_username}-3-action1.png")
             if custDebug: print("Action 1 complete")
-            webdriver.implicitly_wait(5)
+            #webdriver.implicitly_wait(5)
             webdriver.find_element(By.CSS_SELECTOR, ".select2-choice").send_keys(app_spec_username)
             
             #webdriver.save_screenshot(f"./debug/{app_spec_page_id}-{app_spec_username}-4-action2.png")
             if custDebug: print("Action 2 complete")
-            webdriver.implicitly_wait(5)
+            #webdriver.implicitly_wait(5)
             try:
               page.wait_until_visible((By.CSS_SELECTOR, ".select2-result-label"))           #Kdyz toto zhuci, je pravdepodobne uzivateli jiz reader element prirazen na teto strance a nema smysl pokracovat jinak nez prohlednutim a potvrzenim stranky.
               if custDebug: print("Wait for .select2-result-label complete")
@@ -100,7 +98,7 @@ def app_specific_action(webdriver, datasets):
             webdriver.find_element(By.ID, "dialog-submit-button").click()
             if custDebug: print("Action 7 complete")
             #Tady by se mohlo overit, ze se reader element zalozil.
-            
+
         @print_timing("selenium_app_custom_action:confirmPageRead")
         def sub_confirmPageRead():
             page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={app_spec_page_id}")
@@ -118,16 +116,16 @@ def app_specific_action(webdriver, datasets):
                 return
             
             assert webdriver.find_element(By.CSS_SELECTOR, ".aui-group:nth-child(1) > .aui-item:nth-child(1)").text == "You are required to read this page and confirm your reading by buttons below."
-            print("Assert 6 complete")
+            if custDebug: print("Assert 6 complete")
             
             webdriver.find_element(By.ID, "reader-button-confirm-top").click()
-            print("Action 10 complete")
+            if custDebug: print("Action 10 complete")
             
             page.go_to_url(f"{CONFLUENCE_SETTINGS.server_url}/pages/viewpage.action?pageId={app_spec_page_id}")
-            print("Action 10 complete")
+            if custDebug: print("Action 10 complete")
             elements = webdriver.find_elements(By.ID, "reader-expander-trigger-top")
             assert len(elements) == 0
-            print("Assert 7 complete")
+            if custDebug: print("Assert 7 complete")
             
             """
             webdriver.get("http://ec2-18-156-200-53.eu-central-1.compute.amazonaws.com:8090/pages/viewpage.action?pageId=app_spec_page_id")
